@@ -1,0 +1,11 @@
+Stupid start and build new c++ project
+
+1) copy stupid_make.sh in /usr/local/bin/
+
+2) run ./go.sh x32
+3) run ./bin/test
+
+4) run ./go.sh x64
+5) run ./bin/test
+
+6) run ./go.sh clean
