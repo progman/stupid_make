@@ -1,7 +1,17 @@
 #!/bin/bash
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# 0.2.5
+# 0.2.6
 # Alexey Potehin http://www.gnuplanet.ru/doc/cv
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+if [ "${CC}" == "" ];
+then
+    CC='gcc';
+fi
+
+if [ "${CXX}" == "" ];
+then
+    CXX='g++';
+fi
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 echo;
 echo;
@@ -29,11 +39,11 @@ then
 
     if [ "${FLAG_DEBUG}" == "0" ];
     then
-	CFLAGS=${CFLAGS_x32REL};
-	LFLAGS=${LFLAGS_x32REL};
+	CFLAGS="${CFLAGS} ${CFLAGS_x32REL}";
+	LFLAGS="${LFLAGS} ${LFLAGS_x32REL}";
     else
-	CFLAGS=${CFLAGS_x32DBG};
-	LFLAGS=${LFLAGS_x32DBG};
+	CFLAGS="${CFLAGS} ${CFLAGS_x32DBG}";
+	LFLAGS="${LFLAGS} ${LFLAGS_x32DBG}";
     fi
 fi
 
@@ -44,12 +54,19 @@ then
 
     if [ "${FLAG_DEBUG}" == "0" ];
     then
-	CFLAGS=${CFLAGS_x64REL};
-	LFLAGS=${LFLAGS_x64REL};
+	CFLAGS="${CFLAGS} ${CFLAGS_x64REL}";
+	LFLAGS="${LFLAGS} ${LFLAGS_x64REL}";
     else
-	CFLAGS=${CFLAGS_x64DBG};
-	LFLAGS=${LFLAGS_x64DBG};
+	CFLAGS="${CFLAGS} ${CFLAGS_x64DBG}";
+	LFLAGS="${LFLAGS} ${LFLAGS_x64DBG}";
     fi
+fi
+
+
+if [ "${FLAG_PARANOID}" == "1" ];
+then
+    echo "CFLAGS: ${CFLAGS}";
+    echo "LFLAGS: ${LFLAGS}";
 fi
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 rm -rf bin.old &> /dev/null;
@@ -119,7 +136,7 @@ do
     echo "compile ${i}";
     FLAG_SOURCE_NEW="1";
 
-    g++ "${i}" -c ${CFLAGS} \
+    "${CXX}" "${i}" -c ${CFLAGS} \
     -D"PROG_FULL_NAME=\"${PROG_FULL_NAME}\"" \
     -D"PROG_NAME=\"${PROG_NAME}\"" \
     -D"PROG_VERSION=\"${PROG_VERSION}\"" \
@@ -141,6 +158,15 @@ do
 done
 
 rm -rf "${TMP1}" &> /dev/null;
+mv "${TMP2}" bin/warning;
+
+
+if [ "${FLAG_COMPILE_ONLY}" == "1" ];
+then
+    echo "link is disable in your config";
+    echo "Ok.";
+    exit 0;
+fi
 
 
 echo "link and objdump";
@@ -210,7 +236,6 @@ fi
 
 
 #rm -rf bin/*.o &> /dev/null;
-mv "${TMP2}" bin/warning;
 
 echo "Ok.";
 exit 0;
