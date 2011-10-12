@@ -12,15 +12,17 @@ test.cpp \
 lib.cpp \
 ";
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-export CFLAGS_x32DBG="-m32 -ggdb -O0   -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
-export CFLAGS_x32REL="-m32       -O777 -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
-export CFLAGS_x64DBG="-m64 -ggdb -O0   -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
-export CFLAGS_x64REL="-m64       -O777 -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
+export CFLAGS="-std=c++0x -Wall -Wextra -Wlong-long -Wunused";
+export CFLAGS_x32DBG="-m32 -ggdb -O0";
+export CFLAGS_x32REL="-m32       -O777";
+export CFLAGS_x64DBG="-m64 -ggdb -O0";
+export CFLAGS_x64REL="-m64       -O777";
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-export LFLAGS_x32DBG="-m32 -lpthread -ggdb";
-export LFLAGS_x32REL="-m32 -lpthread -s";
-export LFLAGS_x64DBG="-m64 -lpthread -ggdb";
-export LFLAGS_x64REL="-m64 -lpthread -s";
+export LFLAGS_x32DBG="-lpthread";
+export LFLAGS_x32DBG="-m32 -ggdb";
+export LFLAGS_x32REL="-m32 -s";
+export LFLAGS_x64DBG="-m64 -ggdb";
+export LFLAGS_x64REL="-m64 -s";
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 stupid_make.sh "${@}";
 exit "${?}";
