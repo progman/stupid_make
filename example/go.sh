@@ -4,6 +4,9 @@ export PROG_NAME="test";
 export PROG_VERSION="0.0.1";
 export FLAG_DEBUG=1;
 
+#export FLAG_COMPILE_ONLY=1;
+#export CXX='clang';
+
 export FILES=" \
 test.cpp \
 lib.cpp \
