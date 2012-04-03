@@ -1,6 +1,6 @@
 #!/bin/bash
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# 0.2.6
+# 0.2.7
 # Alexey Potehin http://www.gnuplanet.ru/doc/cv
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 if [ "${CC}" == "" ];
@@ -169,7 +169,13 @@ then
 fi
 
 
-echo "link and objdump";
+if [ "${FLAG_DEBUG}" == "1" ];
+then
+    echo "link and objdump";
+else
+    echo "link";
+fi
+
 
 #echo "${FLAG_SOURCE_NEW}";
 
@@ -200,7 +206,10 @@ then
     ln -sf ${PROG_FULL_NAME} bin/${PROG_NAME};
 
 
-    objdump -Dslx bin/${PROG_FULL_NAME} > bin/${PROG_FULL_NAME}.dump;
+    if [ "${FLAG_DEBUG}" == "1" ];
+    then
+	objdump -Dslx bin/${PROG_FULL_NAME} > bin/${PROG_FULL_NAME}.dump;
+    fi
 
 
     cd bin;
