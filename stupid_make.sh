@@ -28,13 +28,21 @@ fi
 
 if [ "${COMMAND}" == "help" ] || [ "${COMMAND}" == "-help" ] || [ "${COMMAND}" == "--help" ] || [ "${COMMAND}" == "-h" ];
 then
-#    echo "example: ${0} clean | x32 | x64";
-    echo "example: go.sh clean | x32 | x64";
+#    echo "example: ${0} all | clean | x32 | x64";
+    echo "example: go.sh all | clean | x32 | x64";
     exit 0;
 fi
 
 
-if [ "${COMMAND}" != "x32" ] && [ "${COMMAND}" != "x64" ];
+if [ "${COMMAND}" == "all" ];
+then
+    rm -rf bin &> /dev/null;
+    rm -rf bin.old &> /dev/null;
+    COMMAND='';
+fi
+
+
+if [ "${COMMAND}" == "" ];
 then
     if [ "$(uname -m | grep 'x86_64' | wc -l | awk '{print $1}')" == "0" ];
     then
