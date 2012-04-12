@@ -1,6 +1,6 @@
 #!/bin/bash
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# 0.2.7
+# 0.2.8
 # Alexey Potehin http://www.gnuplanet.ru/doc/cv
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 if [ "${CC}" == "" ];
@@ -16,16 +16,9 @@ fi
 echo;
 echo;
 
+COMMAND="${1}";
 
-if [ "${1}" != "clean" ] && [ "${1}" != "x32" ] && [ "${1}" != "x64" ];
-then
-#    echo "example: ${0} clean | x32 | x64";
-    echo "example: go.sh clean | x32 | x64";
-    exit 1;
-fi
-
-
-if [ "${1}" == "clean" ];
+if [ "${COMMAND}" == "clean" ];
 then
     rm -rf bin &> /dev/null;
     rm -rf bin.old &> /dev/null;
@@ -33,7 +26,26 @@ then
 fi
 
 
-if [ "${1}" == "x32" ];
+if [ "${COMMAND}" == "help" ] || [ "${COMMAND}" == "-help" ] || [ "${COMMAND}" == "--help" ] || [ "${COMMAND}" == "-h" ];
+then
+#    echo "example: ${0} clean | x32 | x64";
+    echo "example: go.sh clean | x32 | x64";
+    exit 0;
+fi
+
+
+if [ "${COMMAND}" != "x32" ] && [ "${COMMAND}" != "x64" ];
+then
+    if [ "$(uname -m | grep 'x86_64' | wc -l | awk '{print $1}')" == "0" ];
+    then
+	COMMAND='x32';
+    else
+	COMMAND='x64';
+    fi
+fi
+
+
+if [ "${COMMAND}" == "x32" ];
 then
     PROG_TARGET="x32";
 
@@ -48,7 +60,7 @@ then
 fi
 
 
-if [ "${1}" == "x64" ];
+if [ "${COMMAND}" == "x64" ];
 then
     PROG_TARGET="x64";
 
@@ -109,9 +121,9 @@ do
     if [ "${T2}" != "" ] && [ ${T1} -le ${T2} ];
     then
 
-	if [ "${1}" == "x32" ];
+	if [ "${COMMAND}" == "x32" ];
 	then
-	    if [ "$(file -b bin.old/obj/"${i}".o | grep 32-bit | wc -l)" == "1" ];
+	    if [ "$(file -b bin.old/obj/"${i}".o | grep 32-bit | wc -l | awk '{print $1}')" == "1" ];
 	    then
 #		echo "+";
 		cp bin.old/obj/"${i}".o bin/obj/;
@@ -121,9 +133,9 @@ do
 
 
 
-	if [ "${1}" == "x64" ];
+	if [ "${COMMAND}" == "x64" ];
 	then
-	    if [ "$(file -b bin.old/obj/"${i}".o | grep 64-bit | wc -l)" == "1" ];
+	    if [ "$(file -b bin.old/obj/"${i}".o | grep 64-bit | wc -l | awk '{print $1}')" == "1" ];
 	    then
 #		echo "+";
 		cp bin.old/obj/"${i}".o bin/obj/;
