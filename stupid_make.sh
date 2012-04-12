@@ -13,6 +13,13 @@ then
     CXX='g++';
 fi
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+function clean()
+{
+    echo "clean";
+    rm -rf bin &> /dev/null;
+    rm -rf bin.old &> /dev/null;
+}
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 echo;
 echo;
 
@@ -20,8 +27,7 @@ COMMAND="${1}";
 
 if [ "${COMMAND}" == "clean" ];
 then
-    rm -rf bin &> /dev/null;
-    rm -rf bin.old &> /dev/null;
+    clean;
     exit 0;
 fi
 
@@ -36,8 +42,7 @@ fi
 
 if [ "${COMMAND}" == "all" ];
 then
-    rm -rf bin &> /dev/null;
-    rm -rf bin.old &> /dev/null;
+    clean;
     COMMAND='';
 fi
 
@@ -46,8 +51,10 @@ if [ "${COMMAND}" == "" ];
 then
     if [ "$(uname -m | grep 'x86_64' | wc -l | awk '{print $1}')" == "0" ];
     then
+	echo "auto detect x32";
 	COMMAND='x32';
     else
+	echo "auto detect x64";
 	COMMAND='x64';
     fi
 fi
