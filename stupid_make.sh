@@ -53,7 +53,6 @@ fi
 
 if [ "${COMMAND}" == "all" ];
 then
-    clean_half;
     COMMAND='';
 fi
 
@@ -107,8 +106,7 @@ then
     echo "LFLAGS: ${LFLAGS}";
 fi
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-rm -rf bin.old &> /dev/null;
-mv bin bin.old &> /dev/null;
+clean_half;
 mkdir bin;
 mkdir bin/obj;
 chmod 777 bin;
