@@ -1,9 +1,9 @@
 #!/bin/bash
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# 0.3.0
+# 0.3.1
 # Alexey Potehin http://www.gnuplanet.ru/doc/cv
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-VERSION='0.3.0';
+VERSION='0.3.1';
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 if [ "${CC}" == "" ];
 then
@@ -15,16 +15,24 @@ then
     CXX='g++';
 fi
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+function get_time()
+{
+    if [ "$(which date)" != "" ];
+    then
+	echo "[$(date +'%Y-%m-%d %H-%M-%S')]: ";
+    fi
+}
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 function clean()
 {
-    echo "clean";
+    echo "$(get_time)clean";
     rm -rf bin.old &> /dev/null;
     rm -rf bin &> /dev/null;
 }
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 echo;
 echo;
-echo "stupid_make v.${VERSION}";
+echo "$(get_time)stupid_make v.${VERSION}";
 
 COMMAND="${1}";
 
@@ -38,8 +46,8 @@ fi
 
 if [ "${COMMAND}" == "help" ] || [ "${COMMAND}" == "-help" ] || [ "${COMMAND}" == "--help" ] || [ "${COMMAND}" == "-h" ];
 then
-#    echo "example: ${0} all | clean | x32 | x64";
-    echo "example: go.sh all | clean | x32 | x64";
+#    echo "$(get_time)example: ${0} all | clean | x32 | x64";
+    echo "$(get_time)example: go.sh all | clean | x32 | x64";
     exit 0;
 fi
 
@@ -55,10 +63,10 @@ if [ "${COMMAND}" == "" ];
 then
     if [ "$(uname -m | grep 'x86_64' | wc -l | awk '{print $1}')" == "0" ];
     then
-	echo "auto detect x32";
+	echo "$(get_time)auto detect x32";
 	COMMAND='x32';
     else
-	echo "auto detect x64";
+	echo "$(get_time)auto detect x64";
 	COMMAND='x64';
     fi
 fi
@@ -96,8 +104,8 @@ fi
 
 if [ "${FLAG_PARANOID}" == "1" ];
 then
-    echo "CFLAGS: ${CFLAGS}";
-    echo "LFLAGS: ${LFLAGS}";
+    echo "$(get_time)CFLAGS: ${CFLAGS}";
+    echo "$(get_time)LFLAGS: ${LFLAGS}";
 fi
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 rm -rf bin.old &> /dev/null;
@@ -108,7 +116,7 @@ chmod 777 bin;
 
 PROG_FULL_NAME="${PROG_NAME}-${PROG_VERSION}-${PROG_TARGET}";
 
-echo "make ${PROG_FULL_NAME}"
+echo "$(get_time)make ${PROG_FULL_NAME}"
 
 TMP1="$(mktemp)";
 TMP2="$(mktemp)";
@@ -144,7 +152,7 @@ do
 	then
 	    if [ "$(file -b bin.old/obj/"${i}".o | grep 32-bit | wc -l | awk '{print $1}')" == "1" ];
 	    then
-#		echo "+";
+#		echo "$(get_time)+";
 		cp bin.old/obj/"${i}".o bin/obj/;
 		continue;
 	    fi
@@ -156,7 +164,7 @@ do
 	then
 	    if [ "$(file -b bin.old/obj/"${i}".o | grep 64-bit | wc -l | awk '{print $1}')" == "1" ];
 	    then
-#		echo "+";
+#		echo "$(get_time)+";
 		cp bin.old/obj/"${i}".o bin/obj/;
 		continue;
 	    fi
@@ -164,7 +172,7 @@ do
 
     fi
 
-    echo "compile ${i}";
+    echo "$(get_time)compile ${i}";
     FLAG_SOURCE_NEW="1";
 
     "${CXX}" "${i}" -c ${CFLAGS} \
@@ -194,21 +202,13 @@ mv "${TMP2}" bin/warning;
 
 if [ "${FLAG_COMPILE_ONLY}" == "1" ];
 then
-    echo "link is disable in your config";
-    echo "Ok.";
+    echo "$(get_time)link is disable in your config";
+    echo "$(get_time)Ok.";
     exit 0;
 fi
 
 
-if [ "${FLAG_DEBUG}" == "1" ];
-then
-    echo "link and objdump";
-else
-    echo "link";
-fi
-
-
-#echo "${FLAG_SOURCE_NEW}";
+#echo "$(get_time)${FLAG_SOURCE_NEW}";
 
 
 # если даже все уже скопилированно это не значит что все было слинковано
@@ -223,7 +223,8 @@ fi
 
 if [ "${FLAG_SOURCE_NEW}" == "1" ];
 then
-#echo "FLAG_SOURCE_NEW == 1";
+    echo "$(get_time)link";
+#echo "$(get_time)FLAG_SOURCE_NEW == 1";
     g++ bin/obj/* -o bin/${PROG_FULL_NAME} ${LFLAGS};
 
     if [ "${?}" != "0" ];
@@ -239,6 +240,7 @@ then
 
     if [ "${FLAG_DEBUG}" == "1" ];
     then
+	echo "$(get_time)objdump";
 	objdump -Dslx bin/${PROG_FULL_NAME} > bin/${PROG_FULL_NAME}.dump;
     fi
 
@@ -257,9 +259,9 @@ then
 
 	    if [ "${MD5_NEW}" == "${MD5_OLD}" ];
 	    then
-		echo "bin/${PROG_FULL_NAME} == bin.old/${PROG_FULL_NAME}";
+		echo "$(get_time)bin/${PROG_FULL_NAME} == bin.old/${PROG_FULL_NAME}";
 	    else
-		echo "bin/${PROG_FULL_NAME} != bin.old/${PROG_FULL_NAME}";
+		echo "$(get_time)bin/${PROG_FULL_NAME} != bin.old/${PROG_FULL_NAME}";
 	    fi
 	fi
     fi
@@ -271,12 +273,12 @@ else
     ln bin.old/${PROG_FULL_NAME}.dump bin/;
     ln bin.old/${PROG_FULL_NAME}.md5  bin/;
 
-    echo "bin/${PROG_FULL_NAME} == bin.old/${PROG_FULL_NAME}";
+    echo "$(get_time)bin/${PROG_FULL_NAME} == bin.old/${PROG_FULL_NAME}";
 fi
 
 
 #rm -rf bin/*.o &> /dev/null;
 
-echo "Ok.";
+echo "$(get_time)Ok.";
 exit 0;
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
