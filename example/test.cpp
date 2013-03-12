@@ -2,7 +2,7 @@
 
 int main()
 {
-    f();
+	f();
 
-    return 0;
+	return 0;
 }
