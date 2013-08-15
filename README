@@ -1,6 +1,6 @@
 Stupid start and build new c++ project
 
-1) get this tool (git clone git://github.com/progman/stupid_make.git)
+1) get this tool (git clone https://github.com/progman/stupid_make.git)
 2) create link for stupid_make.sh in /usr/local/bin/ or add this dir in PATH
 3) create new dir for new your project
 4) copy and edit go.sh in new your project dir
