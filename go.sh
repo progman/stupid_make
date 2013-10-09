@@ -2,6 +2,7 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 export PROG_NAME="test";
 export PROG_VERSION="0.0.1";
+export PROG_URL="https://github.com/";
 export FLAG_DEBUG=1;
 
 export FILES=" \
@@ -9,15 +10,18 @@ test.cpp \
 lib.cpp \
 ";
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-export CFLAGS_x32DBG="-m32 -ggdb -O0   -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
-export CFLAGS_x32REL="-m32       -O777 -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
-export CFLAGS_x64DBG="-m64 -ggdb -O0   -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
-export CFLAGS_x64REL="-m64       -O777 -std=c++0x -Wall -Wextra -Wlong-long -Wunused";
+export CFLAGS="-pedantic -std=c++11 -Wall -Wextra -Wlong-long -Wunused -pipe -march=native -mtune=native";
+export CFLAGS_x32DBG="-m32 -O0 -g3 -ggdb -pg";
+export CFLAGS_x32REL="-m32 -O3 -g0           -funroll-all-loops";
+export CFLAGS_x64DBG="-m64 -O0 -g3 -ggdb -pg";
+export CFLAGS_x64REL="-m64 -O3 -g0           -funroll-all-loops";
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-export LFLAGS_x32DBG="-m32 -lpthread -ggdb";
-export LFLAGS_x32REL="-m32 -lpthread -s";
-export LFLAGS_x64DBG="-m64 -lpthread -ggdb";
-export LFLAGS_x64REL="-m64 -lpthread -s";
+export LFLAGS="-lpthread";
+export LFLAGS_x32DBG="-m32 -g3 -ggdb -pg";
+export LFLAGS_x32REL="-m32 -s";
+export LFLAGS_x64DBG="-m64 -g3 -ggdb -pg";
+export LFLAGS_x64REL="-m64 -s";
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 stupid_make.sh "${@}";
 exit "${?}";
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
